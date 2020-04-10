@@ -1,8 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
 @font-face{
     font-family: 'Comic Neue';
     src: url(/assets/fonts/Comic_Neue/ComicNeue-Regular.ttf) format("truetype");
 }
 body{
     font-family: 'Comic Neue';
+    padding-top: 56px;
 }

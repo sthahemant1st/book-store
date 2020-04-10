@@ -10,7 +10,7 @@ import { Book } from '../common/book';
 })
 export class BookService {
 
-  baseUrl = "http://localhost:8080/api/v1/books";
+  baseUrl = "http://localhost:8080/api/v1/books?size=100";
   constructor(private httpClient : HttpClient) { }
 
   getBooks() : Observable<Book[]>{
