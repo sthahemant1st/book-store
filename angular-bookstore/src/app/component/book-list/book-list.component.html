@@ -1,0 +1,21 @@
+<p>this is form book list</p>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td>
+        <img [src]="'../'+book.imageUrl" height="50" alt="image50x50"/>
+      </td>
+      <td>{{book.name}}</td>
+      <td>{{book.description}}</td>
+      <td>{{book.unitPrice | currency:'NPR'}}</td>
+    </tr>
+  </tbody>
+</table>
