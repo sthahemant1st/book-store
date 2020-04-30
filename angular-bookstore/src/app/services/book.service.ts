@@ -10,11 +10,14 @@ import { Book } from '../common/book';
 })
 export class BookService {
 
-  baseUrl = "http://localhost:8080/api/v1/books?size=100";
+  //baseUrl = "http://localhost:8080/api/v1/books?size=20";
+  baseUrl = "http://localhost:8080/api/v1/books";
   constructor(private httpClient : HttpClient) { }
 
-  getBooks() : Observable<Book[]>{
-    return this.httpClient.get<GetResponseBooks>(this.baseUrl).pipe(
+  getBooks(currentCategoryId : number) : Observable<Book[]>{
+    const searchUrl : string = `${this.baseUrl}/search/categoryId?id=${currentCategoryId}`;
+    console.log(searchUrl);
+    return this.httpClient.get<GetResponseBooks>(searchUrl).pipe(
       map(response =>response._embedded.books)
     );
     }
