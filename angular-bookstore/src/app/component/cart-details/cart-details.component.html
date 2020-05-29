@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-md-3">
+
+        <app-book-category></app-book-category>
+
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- show msg if there is no item in cart -->
+                <div *ngIf="cartItems.length==0 ; else showTable" class="alert alert-warning">
+                    <p>You donot have any item in the cart....</p>
+                </div>
+                <ng-template #showTable>
+                    <table class="table table-bordered">
+                        <thead class="bg-dark text-light">
+                            <tr>
+                                <td width="20%">Book Image</td>
+                                <td width="50%">Book Details</td>
+                                <td width="30%"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cartItem of cartItems">
+                                <td>
+                                    <img [src]="cartItem.imageUrl" width="150" height="200" alt="Imagehehe">
+                                </td>
+                                <td>
+                                    <p>{{cartItem.name}}</p>
+                                    <p>{{cartItem.unitPrice|currency:'NRP:'}}</p>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>Quantiy :
+                                                <span class="float-right pointer text-danger">
+                                                    <i (click)="deleteItem(cartItem)" class="fas fa-trash-alt"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-md-4 ">
+                                            <button (click)="incrementQuantity(cartItem)" class="btn btn-primary btn-sm float-left">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            {{cartItem.quantity}}
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <button (click)="decrementQuantity(cartItem)" class="btn btn-primary btn-sm float-right">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <p>subtotal : {{cartItem.unitPrice*cartItem.quantity|currency:'NRP'}}</p>
+                                        </div>
+
+                                    </div>
+
+
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    {{totalPrice}}
+                                    <form action="https://uat.esewa.com.np/epay/main" method="POST">
+                                        <input [value]="totalPrice" name="tAmt" type="hidden">
+                                        <input [value]="totalPrice" name="amt" type="hidden">
+                                        <input value="0" name="txAmt" type="hidden">
+                                        <input value="0" name="psc" type="hidden">
+                                        <input value="0" name="pdc" type="hidden">
+                                        <input value="epay_payment" name="scd" type="hidden">
+                                        <input value="2345" name="pid" type="hidden">
+                                        <input value="http://merchant.com.np/page/esewa_payment_success?q=su" type="hidden" name="su">
+                                        <input value="http://merchant.com.np/page/esewa_payment_failed?q=fu" type="hidden" name="fu">
+                                        <input value="Pay By ESEWA" type="submit">
+                                        </form>
+                            
+                                </td>
+                                <td class="font-weight-bold">
+                                    <p>Total quantity : {{totalQuantity}}</p>
+                                    <p>Shipping : Free</p>
+                                    <p>Total Price : {{totalPrice|currency:'NRP'}} </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-template>
+            </div>
+        </div>
+
+    </div>
+</div>

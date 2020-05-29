@@ -1,43 +1,73 @@
+<!-- loader start -->
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<!-- loader end -->
+
+<!-- main row start -->
 <div class="row">
-
+  <!-- col-lg-3 start -->
   <div class="col-lg-3">
-
-    <h1 class="my-4">Book Store</h1>
-    <div class="list-group">
-      <a routerLink="/category/1" class="list-group-item"
-        routerLinkActive="bg-primary text-white font-weight-bold">Web Development</a>
-      <a routerLink="/category/2" class="list-group-item" 
-        routerLinkActive="bg-primary text-white font-weight-bold">Programming</a>
-      <a routerLink="/category/3" class="list-group-item" 
-        routerLinkActive="bg-primary text-white font-weight-bold">Databases</a>
-      
-    </div>
+    <app-book-category></app-book-category>
 
   </div>
-  <!-- /.col-lg-3 -->
+  <!-- col-lg-3 end-->
 
+  <!-- col-lg-9 start -->
   <div class="col-lg-9">
     <div class="row">
-      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let book of books">
+      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let book of books | paginate: { itemsPerPage: pageSize, currentPage: currentPage }" >
         <div class="card h-100">
-          <a href="#"><img class="card-img-top img-responsive" [src]="'../'+book.imageUrl"   alt=""></a>
+          <a routerLink="/books/{{book.id}}"><img class="card-img-top img-responsive" [src]="'../'+book.imageUrl"   alt=""></a>
           <div class="card-body">
             <h4 class="card-title">
-              <a href="#">{{book.name}}</a>
+              <a routerLink="/books/{{book.id}}">{{book.name}}</a>
             </h4>
             <h5>{{book.unitPrice | currency:'NPR'}}</h5>
             <p class="card-text text-truncate">{{book.description}}</p>
           </div>
           <div class="card-footer">
-            <button class="btn btn-primary float-right">Add to Cart</button>
+            <button class="btn btn-primary float-right" (click)="addToCart(book)">Add to Cart</button>
           </div>
         </div>
       </div>
+      <div *ngIf="books?.length == 0 " class="col-md-12 alert alert-warning mt-7">
+        No Books Found!!!
+      </div>
   </div>
-  <!-- /.col-lg-9 -->
+  <!-- col-lg-9 ends-->
+
+  <!-- pagination starts here -->
+  <div class="row" *ngIf="books?.length == 0 ">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <span>Page Size ::</span>
+        </div>
+        <div class="col-md-8">
+          <select (change)="updatePageSize($event.target.value)" class="form-control-sm" style="width: 20%;">
+            <option >3</option>
+            <option selected>6</option>
+            <option >9</option>
+            <option >12</option>
+            <option >15</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <pagination-controls class="pagination" (pageChange)="currentPage = $event"></pagination-controls>
+    </div>
+  </div>
+  <!-- pagination ends here -->
 
 </div>
-<!-- /.row -->
+<!-- main row end -->
 
 
 

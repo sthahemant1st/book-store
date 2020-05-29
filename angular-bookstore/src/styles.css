@@ -11,3 +11,11 @@ body{
     font-family: 'Comic Neue';
     padding-top: 56px;
 }
+
+a{
+    cursor: pointer;
+}
+
+.pagination{
+    float: right;
+}

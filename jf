@@ -1,0 +1,192 @@
+[33mcommit d7171ddac3e6f9a241d3026c7386cfa34c3e1322[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mforSearch[m[33m)[m
+Author: sthahemant1st <45959893+sthahemant1st@users.noreply.github.com>
+Date:   Thu Apr 30 20:49:24 2020 +0545
+
+    Search by category Compleated...
+
+[1mdiff --git a/angular-bookstore/src/app/app.component.html b/angular-bookstore/src/app/app.component.html[m
+[1mindex 88b22f3..239ebc7 100644[m
+[1m--- a/angular-bookstore/src/app/app.component.html[m
+[1m+++ b/angular-bookstore/src/app/app.component.html[m
+[36m@@ -40,27 +40,7 @@[m
+ <!-- Page Content -->[m
+ <div class="container">[m
+ [m
+[31m-  <div class="row">[m
+[31m-[m
+[31m-    <div class="col-lg-3">[m
+[31m-[m
+[31m-      <h1 class="my-4">Book Store</h1>[m
+[31m-      <div class="list-group">[m
+[31m-        <a href="#" class="list-group-item">Category 1</a>[m
+[31m-        <a href="#" class="list-group-item">Category 2</a>[m
+[31m-        <a href="#" class="list-group-item">Category 3</a>[m
+[31m-      </div>[m
+[31m-[m
+[31m-    </div>[m
+[31m-    <!-- /.col-lg-3 -->[m
+[31m-[m
+[31m-    <div class="col-lg-9">[m
+[31m-      <app-book-list></app-book-list>[m
+[31m-    </div>[m
+[31m-    <!-- /.col-lg-9 -->[m
+[31m-[m
+[31m-  </div>[m
+[31m-  <!-- /.row -->[m
+[32m+[m[32m  <router-outlet></router-outlet>[m
+ [m
+ </div>[m
+ <!-- /.container -->[m
+[36m@@ -72,8 +52,3 @@[m
+   </div>[m
+ </footer>[m
+ [m
+[31m-<!-- <div class="container-fluid">[m
+[31m-  <h2 class="text-center">Book Store..</h2>[m
+[31m-  <app-book-list></app-book-list>[m
+[31m-  <app-test></app-test>[m
+[31m-</div> -->[m
+\ No newline at end of file[m
+[1mdiff --git a/angular-bookstore/src/app/app.module.ts b/angular-bookstore/src/app/app.module.ts[m
+[1mindex c828261..2183836 100644[m
+[1m--- a/angular-bookstore/src/app/app.module.ts[m
+[1m+++ b/angular-bookstore/src/app/app.module.ts[m
+[36m@@ -1,21 +1,30 @@[m
+[32m+[m[32mimport { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';[m
+ import { BrowserModule } from '@angular/platform-browser';[m
+[31m-import { NgModule } from '@angular/core';[m
+[32m+[m[32mimport { NgModule, Component } from '@angular/core';[m
+ import { HttpClientModule } from '@angular/common/http';[m
+[32m+[m[32mimport { RouterModule , Routes } from '@angular/router';[m
+ [m
+ import { AppComponent } from './app.component';[m
+ import { BookListComponent } from './component/book-list/book-list.component';[m
+[31m-import { TestComponent } from './component/test/test.component';[m
+ import { BookService } from './services/book.service';[m
+ [m
+[32m+[m[32mconst routes : Routes = [[m
+[32m+[m[32m  {path:'books' , component : BookListComponent},[m
+[32m+[m[32m  {path:'category/:id', component : BookListComponent},[m
+[32m+[m[32m  {path : '' , redirectTo : '/books', pathMatch : 'full'},[m
+[32m+[m[32m  {path : '**' , component : PageNotFoundComponent}[m
+[32m+[m[32m][m
+[32m+[m
+ @NgModule({[m
+   declarations: [[m
+     AppComponent,[m
+     BookListComponent,[m
+[31m-    TestComponent,[m
+[32m+[m[32m    PageNotFoundComponent[m
+   ],[m
+   imports: [[m
+     BrowserModule,[m
+[31m-    HttpClientModule[m
+[32m+[m[32m    HttpClientModule,[m
+[32m+[m[32m    RouterModule.forRoot(routes)[m
+   ],[m
+   providers: [[m
+     BookService[m
+[1mdiff --git a/angular-bookstore/src/app/component/book-list/book-list.component.html b/angular-bookstore/src/app/component/book-list/book-list.component.html[m
+[1mindex 1f5ff52..46b58ba 100644[m
+[1m--- a/angular-bookstore/src/app/component/book-list/book-list.component.html[m
+[1m+++ b/angular-bookstore/src/app/component/book-list/book-list.component.html[m
+[36m@@ -1,39 +1,44 @@[m
+ <div class="row">[m
+[31m-  <div class="col-lg-4 col-md-6 mb-4" *ngFor="let book of books">[m
+[31m-    <div class="card h-100">[m
+[31m-      <a href="#"><img class="card-img-top img-responsive" [src]="'../'+book.imageUrl"   alt=""></a>[m
+[31m-      <div class="card-body">[m
+[31m-        <h4 class="card-title">[m
+[31m-          <a href="#">{{book.name}}</a>[m
+[31m-        </h4>[m
+[31m-        <h5>{{book.unitPrice | currency:'NPR'}}</h5>[m
+[31m-        <p class="card-text text-truncate">{{book.description}}</p>[m
+[31m-      </div>[m
+[31m-      <div class="card-footer">[m
+[31m-        <button class="btn btn-primary float-right">Add to Cart</button>[m
+[31m-      </div>[m
+[32m+[m
+[32m+[m[32m  <div class="col-lg-3">[m
+[32m+[m
+[32m+[m[32m    <h1 class="my-4">Book Store</h1>[m
+[32m+[m[32m    <div class="list-group">[m
+[32m+[m[32m      <a routerLink="/category/1" class="list-group-item"[m
+[32m+[m[32m        routerLinkActive="bg-primary text-white font-weight-bold">Web Development</a>[m
+[32m+[m[32m      <a routerLink="/category/2" class="list-group-item"[m[41m [m
+[32m+[m[32m        routerLinkActive="bg-primary text-white font-weight-bold">Programming</a>[m
+[32m+[m[32m      <a routerLink="/category/3" class="list-group-item"[m[41m [m
+[32m+[m[32m        routerLinkActive="bg-primary text-white font-weight-bold">Databases</a>[m
+[32m+[m[41m      [m
+     </div>[m
+[32m+[m
+   </div>[m
+[32m+[m[32m  <!-- /.col-lg-3 -->[m
+[32m+[m
+[32m+[m[32m  <div class="col-lg-9">[m
+[32m+[m[32m    <div class="row">[m
+[32m+[m[32m      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let book of books">[m
+[32m+[m[32m        <div class="card h-100">[m
+[32m+[m[32m          <a href="#"><img class="card-img-top img-responsive" [src]="'../'+book.imageUrl"   alt=""></a>[m
+[32m+[m[32m          <div class="card-body">[m
+[32m+[m[32m            <h4 class="card-title">[m
+[32m+[m[32m              <a href="#">{{book.name}}</a>[m
+[32m+[m[32m            </h4>[m
+[32m+[m[32m            <h5>{{book.unitPrice | currency:'NPR'}}</h5>[m
+[32m+[m[32m            <p class="card-text text-truncate">{{book.description}}</p>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m          <div class="card-footer">[m
+[32m+[m[32m            <button class="btn btn-primary float-right">Add to Cart</button>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m  </div>[m
+[32m+[m[32m  <!-- /.col-lg-9 -->[m
+[32m+[m
+[32m+[m[32m</div>[m
+[32m+[m[32m<!-- /.row -->[m
+[32m+[m
+[32m+[m
+ [m
+   [m
+[31m-<!-- <p>this is form book list</p>[m
+[31m-<table border="1" class="table">[m
+[31m-  <thead>[m
+[31m-    <tr>[m
+[31m-      <th>Image</th>[m
+[31m-      <th>Name</th>[m
+[31m-      <th>Description</th>[m
+[31m-      <th>price</th>[m
+[31m-    </tr>[m
+[31m-  </thead>[m
+[31m-  <tbody>[m
+[31m-    <tr *ngFor="let book of books">[m
+[31m-      <td>[m
+[31m-        <img [src]="'../'+book.imageUrl" height="50" alt="image50x50"/>[m
+[31m-      </td>[m
+[31m-      <td>{{book.name}}</td>[m
+[31m-      <td>{{book.description}}</td>[m
+[31m-      <td>{{book.unitPrice | currency:'NPR'}}</td>[m
+[31m-    </tr>[m
+[31m-  </tbody>[m
+[31m-</table> -->[m
+\ No newline at end of file[m
+[1mdiff --git a/angular-bookstore/src/app/component/book-list/book-list.component.ts b/angular-bookstore/src/app/component/book-list/book-list.component.ts[m
+[1mindex 8d3e6d7..3e6b117 100644[m
+[1m--- a/angular-bookstore/src/app/component/book-list/book-list.component.ts[m
+[1m+++ b/angular-bookstore/src/app/component/book-list/book-list.component.ts[m
+[36m@@ -2,6 +2,7 @@[m [mimport { Book } from './../../common/book';[m
+ import { Component, OnInit } from '@angular/core';[m
+ import { BookService } from 'src/app/services/book.service';[m
+ import { getLocaleFirstDayOfWeek } from '@angular/common';[m
+[32m+[m[32mimport { ActivatedRoute } from '@angular/router';[m
+ [m
+ [m
+ @Component({[m
+[36m@@ -11,14 +12,28 @@[m [mimport { getLocaleFirstDayOfWeek } from '@angular/common';[m
+ })[m
+ export class BookListComponent implements OnInit {[m
+   books : Book[];[m
+[32m+[m[32m  currentCategoryId : number;[m
+ [m
+[31m-  constructor(private _bookService : BookService) { }[m
+[32m+

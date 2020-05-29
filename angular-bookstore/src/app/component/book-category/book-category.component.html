@@ -1,0 +1,14 @@
+<h1 class="my-4">Book Store</h1>
+<div class="list-group">
+
+
+    <a *ngFor="let bookCategory of bookCategories" routerLink="/category/{{bookCategory.id}}" class="list-group-item" routerLinkActive="bg-primary text-white font-weight-bold">
+        {{bookCategory.categoryName}}</a>
+
+
+    <!-- <a routerLink="/category/2" class="list-group-item"
+        routerLinkActive="bg-primary text-white font-weight-bold">Programming</a>
+    <a routerLink="/category/3" class="list-group-item"
+        routerLinkActive="bg-primary text-white font-weight-bold">Databases</a> -->
+
+</div>

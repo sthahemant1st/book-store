@@ -1,0 +1,8 @@
+
+<div class="navbar-nav ml-2">
+    <input type="text" #searchInput class="form-control mr-1"
+        (keyup.enter)="searchBooks(searchInput.value)"
+        placeholder="Search Books" >
+    <button type="submit" (click)="searchBooks(searchInput.value)" class="btn btn-primary">Search</button>
+
+</div>
